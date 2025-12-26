@@ -11,7 +11,5 @@ class ProductSerializer(serializers.ModelSerializer):
             'product_price',
             'product_manufacturing_date',
             'product_expiry_date',
-            'supplier_cost',
-            'internal_notes',
         ]
-        read_only_fields = ['supplier_cost', 'internal_notes']
+        
