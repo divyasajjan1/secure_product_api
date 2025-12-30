@@ -25,10 +25,15 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # #products API endpoint
+    # products API endpoint
     path('api/products/', views.ProductListCreateAPIView.as_view(), name='product-list-create'),
     
     # JWT Auth endpoints
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        "api/products/categories/",
+        views.ProductCategoryListAPIView.as_view(),
+        name="product-categories"
+    ),
 ]
