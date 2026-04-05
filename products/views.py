@@ -4,6 +4,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.response import Response
+from .database_assistant import query_my_database
+from rest_framework.permissions import AllowAny
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -51,3 +53,13 @@ class ProductCategoryListAPIView(APIView):
             .distinct()
         )
         return Response(categories)
+    
+class SQLChatView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        question = request.data.get('question')
+        if not question:
+            return Response({"error": "No question provided"}, status=400)
+
+        answer = query_my_database(question)
+        return Response({"answer": answer})

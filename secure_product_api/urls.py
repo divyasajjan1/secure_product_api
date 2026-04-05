@@ -28,9 +28,13 @@ urlpatterns = [
     # products API endpoint
     path('api/products/', views.ProductListCreateAPIView.as_view(), name='product-list-create'),
     
+    # LangChain AI Chat endpoint
+    path('api/ask-db/', views.SQLChatView.as_view(), name='ask-db'),
+
     # JWT Auth endpoints
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+
     path(
         "api/products/categories/",
         views.ProductCategoryListAPIView.as_view(),
