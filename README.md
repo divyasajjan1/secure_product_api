@@ -24,6 +24,9 @@ The project is intentionally kept **simple yet realistic**, making it suitable f
 - **django-filter**
 - **encrypted-model-fields**
 - **python-dotenv**
+- **LangChain & LangGraph** (LLM Orchestration)
+- **Google Gemini 1.5 Flash** (Generative AI Model)
+- **SQLAlchemy** (Database Abstraction for AI)
 
 ---
 
@@ -90,6 +93,7 @@ Rather than relying on high-level plugins, this project implements a **custom sy
 * **Defense in Depth**: Security is enforced at three levels: the Database (Encryption), the API (RBAC), and the UI (Masking).
 * **JWT Integration**: Full authentication flow where user roles directly dictate data visibility.
 The encryption key is stored securely in a `.env` file and never committed to GitHub.
+* **AI Prompt Injection Mitigation**: Use of SQLDatabase.from_uri constraints and custom PromptTemplates to prevent the LLM from accessing sensitive authentication tables or performing unauthorized database writes.
 
 ---
 
@@ -100,6 +104,7 @@ Create a `.env` file in the project root:
 FIELD_ENCRYPTION_KEY=your_fernet_key_here
 SECRET_KEY=your_django_secret_key
 The encryption key is generated using Fernet and must be a valid 32-byte base64 string.
+GOOGLE_API_KEY=your_gemini_api_key_here
 
 ## 📥 Database Population
 
@@ -164,6 +169,16 @@ Only authenticated users can access the API
 JWT tokens are required in request headers:
 Authorization: Bearer <access_token>
 
+## 🤖 AI-Powered Natural Language Analytics
+Integrates an **Intelligent Database Assistant** using **LangChain** and **Google Gemini 1.5 Flash** to translate plain-English queries into real-time SQL insights.
+
+### 🛡️ Security & AI Guardrails
+Built with a "Security-First" approach to prevent SQL injection and data leakage:
+* **Read-Only Enforcement:** Uses `sqlite:///db.sqlite3?mode=ro` to physically prevent destructive operations (`DELETE`, `DROP`).
+* **Schema Masking:** AI is restricted via `include_tables` to the `products_product` table, hiding sensitive system and user tables.
+* **Encryption Awareness:** Custom `PromptTemplates` instruct the LLM to ignore `_encrypted` fields, preventing logic errors on ciphertext.
+* **Output Sanitization:** Engineered prompts to enforce raw SQL returns, neutralizing Markdown syntax errors in the SQLite engine.
+
 ## 🧪 Admin Panel
 
 Django Admin is enabled to:
@@ -177,9 +192,9 @@ python manage.py createsuperuser
 
 ## 🎯 What This Project Demonstrates
 
-- Real-world REST API design
-- Secure handling of sensitive data
-- Authentication & authorization
-- Scalable API features (pagination & filtering)
-- Clean separation of concerns (models, serializers, views)
-- Practical Django + DRF usage
+- **AI Orchestration**: Integration of LLMs with structured relational databases using LangChain.
+- **Defensive AI Architecture**: Implementing "Least Privilege" access and read-only database connections for AI agents.
+- **Real-world REST API Design**: Building scalable, production-ready endpoints with Django & DRF.
+- **Advanced Data Security**: Manual AES-256 encryption at the model level and role-based data masking.
+- **Full-Stack Integration**: Bridging a React frontend with a complex backend featuring JWT Auth, filtering, and AI analytics.
+- **Clean Architecture**: Strict separation of concerns across Models, Serializers, Views, and AI Utility layers.
